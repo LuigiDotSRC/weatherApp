@@ -2,7 +2,8 @@ package com.example.weatherApp.controllers;
 
 import com.example.weatherApp.services.WeatherAPIService;
 
-import org.json.simple.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +17,10 @@ public class home {
         double TorontoLat = -79.3832;
 
         WeatherAPIService WeatherService = new WeatherAPIService(TorontoLat,TorontoLong);
-        JSONObject APIResponse = WeatherService.getAPIResponseObject();
+        JsonNode APIResponse = WeatherService.getAPIResponseObject();
 
-        double longitude = (double)( (JSONObject)(APIResponse.get("coord")) ).get("lon");
-        double latitude = (double)( (JSONObject)(APIResponse.get("coord")) ).get("lat");
+        JsonNode longitude = APIResponse.get("coord").get("lon");
+        JsonNode latitude = APIResponse.get("coord").get("lat");
 
         model.addAttribute("longitude",longitude);
         model.addAttribute("latitude",latitude);

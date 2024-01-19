@@ -1,8 +1,6 @@
 package com.example.weatherApp.services;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +14,7 @@ import java.util.Scanner;
 public class WeatherAPIService {
 
     private static final String CONFIG_FILE_PATH = "application.properties";
-    private JSONObject data;
+    private JsonNode data;
 
     public WeatherAPIService(double latitude, double longitude) {
         createConnection(latitude,longitude);
@@ -54,10 +52,7 @@ public class WeatherAPIService {
                 }
 
                 scanner.close();
-
-                JSONParser parser = new JSONParser();
-                this.data = (JSONObject) parser.parse(String.valueOf(informationString));
-
+                this.data = JSON.parse(String.valueOf(informationString));
             }
         }
         catch(Exception e){ //throws MalformedURLException, IOException, RuntimeException, ParseException
@@ -65,8 +60,7 @@ public class WeatherAPIService {
         }
     }
 
-    public JSONObject getAPIResponseObject(){
+    public JsonNode getAPIResponseObject(){
         return this.data;
     }
-
 }
